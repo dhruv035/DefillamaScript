@@ -17,13 +17,13 @@ async function fetch() {
     DAI: {
       abi: IdleCDO,
       decimals: 18,
-      name: 'DAITranche',
+      name: 'IdleCDO_idleDAIYield',
       address: '0xd0DbcD556cA22d3f3c142e9a3220053FD7a247BC'
     },
     FEI: {
       abi: IdleCDO,
       decimals: 18,
-      name: 'FEITranche',
+      name: 'IdleCDO_idleFEIYield',
       address: '0x956f47f50a910163d8bf957cf5846d573e7f87ca'
     }
   }
