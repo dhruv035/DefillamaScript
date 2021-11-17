@@ -10,14 +10,26 @@ const IdleCDO = require('./config/idle/IdleCDO.json');
 
 async function fetch() {
 
-  // Idle tokens info
-  const contracts = {
-    Tranche: {
+
+  //Tranches info
+
+  const trancheContracts = {
+    DAI: {
       abi: IdleCDO,
       decimals: 18,
-      name: 'Tranche',
+      name: 'DAITranche',
       address: '0xd0DbcD556cA22d3f3c142e9a3220053FD7a247BC'
     },
+    FEI: {
+      abi: IdleCDO,
+      decimals: 18,
+      name: 'FEITranche',
+      address: '0x956f47f50a910163d8bf957cf5846d573e7f87ca'
+    }
+  }
+  // Idle tokens info
+  const contracts = {
+
 
     idleWETHYieldV4: {
       abi: IdleTokenV4,
@@ -278,6 +290,26 @@ async function fetch() {
 
     calls.push(call);
   });
+
+
+
+  Object.keys(trancheContracts).forEach((contractName) => {
+
+    const call = new Promise(async (resolve, reject) => {
+      const contractInfo = trancheContracts[contractName];
+      const idleContract = new web3.eth.Contract(contractInfo.abi, contractInfo.address);
+
+      let TVL = await idleContract.methods.getContractValue().call();
+      let tokenTVL = new BigNumber(TVL)
+
+      resolve(tokenTVL);
+
+
+    });
+
+    calls.push(call);
+  });
+
 
   const res = await Promise.all(calls);
   const totalTVL = res.reduce((totalTVL, tokenTVL) => {
